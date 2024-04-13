@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 import shutil
 
 import cv2
@@ -6,12 +7,17 @@ import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+import roop
 from roop.face_analyser import get_one_face
 from roop.predictor import predict_image
 from roop.processors.frame.core import get_frame_processors_modules
 from roop.utilities import has_image_extension, clean_temp, is_image
 from enum import IntEnum
+from dotenv import load_dotenv
+import roop.globals
 
+load_dotenv()
+roop.globals.execution_providers = os.getenv("EXECUTION-PROVIDER", "cuda")
 
 class TransParam(BaseModel):
     src: str
@@ -71,3 +77,4 @@ async def transform(param: TransParam):
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8008)
+
