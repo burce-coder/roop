@@ -27,6 +27,7 @@ def clear_face_analyser() -> Any:
 
 
 def get_one_face(frame: Frame, position: int = 0) -> Optional[Face]:
+    position = 0 if position is None else position
     many_faces = get_many_faces(frame)
     if many_faces:
         try:
@@ -49,6 +50,6 @@ def find_similar_face(frame: Frame, reference_face: Face) -> Optional[Face]:
         for face in many_faces:
             if hasattr(face, 'normed_embedding') and hasattr(reference_face, 'normed_embedding'):
                 distance = numpy.sum(numpy.square(face.normed_embedding - reference_face.normed_embedding))
-                if distance < roop.globals.similar_face_distance:
+                if distance < 0.85:
                     return face
     return None
