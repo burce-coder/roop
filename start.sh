@@ -1,0 +1,1 @@
+nohup uvicorn server:app --host 0.0.0.0 --port 8008 > log.txt 2>&1 &

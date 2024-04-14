@@ -1,23 +1,48 @@
 #!/usr/bin/env python3
 import os
 import shutil
+import sys
 
 import cv2
 import uvicorn
 from fastapi import FastAPI
 from pydantic import BaseModel
 
-import roop
+from roop.core import decode_execution_providers, suggest_execution_threads, limit_resources
 from roop.face_analyser import get_one_face
 from roop.predictor import predict_image
 from roop.processors.frame.core import get_frame_processors_modules
-from roop.utilities import has_image_extension, clean_temp, is_image
+from roop.utilities import clean_temp, is_image
 from enum import IntEnum
 from dotenv import load_dotenv
 import roop.globals
 
 load_dotenv()
-roop.globals.execution_providers = os.getenv("EXECUTION-PROVIDER", "cuda")
+
+if any(arg.startswith('--execution-provider') for arg in sys.argv):
+    os.environ['OMP_NUM_THREADS'] = '1'
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+exe_provider = os.getenv("EXECUTION-PROVIDER", "cuda").split(',')
+roop.globals.execution_providers = decode_execution_providers(exe_provider)
+print(f"{roop.globals.execution_providers}")
+roop.globals.headless = True
+roop.globals.keep_fps = True
+roop.globals.keep_frames = True
+roop.globals.skip_audio = True
+roop.globals.many_faces = False
+roop.globals.reference_face_position = 0
+roop.globals.reference_frame_number = 0
+roop.globals.similar_face_distance = 0.85
+roop.globals.temp_frame_format = 'jpg'
+roop.globals.temp_frame_quality = 0
+roop.globals.output_video_encoder = 'libx264'
+roop.globals.output_video_quality = 35
+roop.globals.execution_threads = suggest_execution_threads()
+
+limit_resources()
+
 
 class TransParam(BaseModel):
     src: str

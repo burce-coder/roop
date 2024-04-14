@@ -55,7 +55,8 @@ def pre_start() -> bool:
 
 
 def post_process() -> None:
-    clear_face_enhancer()
+    # clear_face_enhancer()
+    pass
 
 
 def enhance_face(target_face: Face, temp_frame: Frame) -> Frame:

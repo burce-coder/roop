@@ -1,0 +1,1 @@
+time curl -H "Content-Type: application/json" -X POST -d '{"src":"/data/tmp/s1.jpg", "tpl":"/data/tmp/t1.jpg", "out":"/data/tmp/o1.jpg"}'  http://localhost:8008/transform

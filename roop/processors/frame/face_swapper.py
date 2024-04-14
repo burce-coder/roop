@@ -52,7 +52,7 @@ def pre_start() -> bool:
 
 
 def post_process() -> None:
-    clear_face_swapper()
+    # clear_face_swapper()
     clear_face_reference()
 
 
