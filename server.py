@@ -24,7 +24,7 @@ if any(arg.startswith('--execution-provider') for arg in sys.argv):
 
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-exe_provider = os.getenv("EXECUTION-PROVIDER", "cuda").split(',')
+exe_provider = os.getenv("EXECUTION_PROVIDER", "cuda").split(',')
 roop.globals.execution_providers = decode_execution_providers(exe_provider)
 print(f"{roop.globals.execution_providers}")
 roop.globals.headless = True
