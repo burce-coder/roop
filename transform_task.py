@@ -1,3 +1,4 @@
+import logging
 import os
 import shutil
 
@@ -13,8 +14,13 @@ from roop.predictor import predict_image
 from roop.processors.frame.core import get_frame_processors_modules
 from roop.utilities import is_image, clean_temp
 
+logging.basicConfig(format='[%(filename)s:%(lineno)d] %(asctime)s - %(levelname)s : %(message)s',
+                    datefmt='%Y-%m-%d %H:%M:%S %p',
+                    level=logging.INFO)
+
 
 def init():
+    logging.info("transform_task.init()")
     load_dotenv()
     os.environ['OMP_NUM_THREADS'] = '1'
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -36,6 +42,9 @@ def init():
     roop.globals.execution_threads = suggest_execution_threads()
 
     limit_resources()
+
+
+init()
 
 
 def pre_start(src: str) -> TransRes:

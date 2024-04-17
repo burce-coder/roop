@@ -10,9 +10,6 @@ logging.basicConfig(format='[%(filename)s:%(lineno)d] %(asctime)s - %(levelname)
                     level=logging.INFO)
 
 
-transform_task.init()
-
-
 @app.task
 def transform(param: TransParam):
     logging.info(f'异步任务接口接收到请求，参数为{param}')
