@@ -4,29 +4,29 @@ import shutil
 
 import cv2
 from dotenv import load_dotenv
-from model import TransRes
 
-import roop
 import roop.globals
 from roop.core import decode_execution_providers, suggest_execution_threads, limit_resources
 from roop.face_analyser import get_one_face
+from roop.my_celery.model import TransRes
 from roop.predictor import predict_image
 from roop.processors.frame.core import get_frame_processors_modules
 from roop.utilities import is_image, clean_temp
 
-logging.basicConfig(format='[%(filename)s:%(lineno)d] %(asctime)s - %(levelname)s : %(message)s',
-                    datefmt='%Y-%m-%d %H:%M:%S %p',
-                    level=logging.INFO)
+CELERY_TRANSFORM_INIT = False
 
 
 def init():
+    global CELERY_TRANSFORM_INIT
+    if CELERY_TRANSFORM_INIT:
+        return
+    CELERY_TRANSFORM_INIT = True
     logging.info("transform_task.init()")
     load_dotenv()
     os.environ['OMP_NUM_THREADS'] = '1'
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
     exe_provider = os.getenv("EXECUTION_PROVIDER", "cuda").split(',')
     roop.globals.execution_providers = decode_execution_providers(exe_provider)
-    print(f"{roop.globals.execution_providers}")
     roop.globals.headless = True
     roop.globals.keep_fps = True
     roop.globals.keep_frames = True
@@ -44,9 +44,6 @@ def init():
     limit_resources()
 
 
-init()
-
-
 def pre_start(src: str) -> TransRes:
     if not is_image(src):
         return TransRes.file_format_err
@@ -56,6 +53,7 @@ def pre_start(src: str) -> TransRes:
 
 
 def process(src: str, tpl: str, out: str) -> TransRes:
+    init()
     res = pre_start(src)
     if res != TransRes.ok:
         return res

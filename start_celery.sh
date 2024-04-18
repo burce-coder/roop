@@ -1,1 +1,1 @@
-celery -A my_celery worker --loglevel=info
+celery -A roop.my_celery worker --loglevel=info

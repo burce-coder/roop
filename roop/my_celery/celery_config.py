@@ -1,8 +1,13 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
 broker_url = 'redis://127.0.0.1:6379/1'
 result_backend = 'redis://127.0.0.1:6379/2'
 
 # 结果保存时间(秒)
-result_expires = 10*60
+result_expires = 6*60*60
 
 # 追踪状态
 task_track_started = True
@@ -26,3 +31,5 @@ broker_connection_max_retries = None
 # broker_transport_options = {
 #     'priority_steps': list(range(10)),
 # }
+accept_content = ['json']
+result_accept_content = ['json']
