@@ -1,0 +1,16 @@
+version: "3"
+services:
+  app:
+    build: .
+    restart: always
+    env_file: .env
+    volumes:
+      - d:/static:/static
+    image: jigsaw-worker
+    # linux 下使用 host
+    # network_mode: host
+    # windows 下使用 port
+    # ports:
+    #  - "8080:8080"
+    # command: celery -A roop.my_celery.main worker --loglevel=info --events --concurrency=4
+    command: /bin/bash
