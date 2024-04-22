@@ -25,7 +25,7 @@ RUN pip install torch==2.0.1+cu118 --find-links https://download.pytorch.org/whl
 RUN pip install fvcore iopath
 RUN pip install --no-index --no-cache-dir pytorch3d --find-links https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py310_cu118_pyt201/download.html
 COPY requirements-roop.txt requirements-roop.txt
-RUN pip install --upgrade -r requirements-roop.txt --find-links https://download.pytorch.org/whl/torch_stable.html
+RUN pip install --upgrade -r requirements-roop.txt --find-links https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py310_cu118_pyt201/download.html
 COPY . /app/
 
 # FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
