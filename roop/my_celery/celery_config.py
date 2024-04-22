@@ -3,8 +3,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-broker_url = 'redis://127.0.0.1:6379/1'
-result_backend = 'redis://127.0.0.1:6379/2'
+broker_url = os.getenv("BROKER_URL", "redis://127.0.0.1:6379/1")
+result_backend = os.getenv("RESULT_BACKEND", "redis://127.0.0.1:6379/2")
 
 # 结果保存时间(秒)
 result_expires = 6*60*60

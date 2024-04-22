@@ -2,15 +2,37 @@ version: "3"
 services:
   app:
     build: .
+    image: jigsaw-worker
+    container_name: jigsaw-worker
     restart: always
-    env_file: .env
+    # env_file: .env
+    environment:
+      - EXECUTION_PROVIDER=gpu
+      - BROKER_URL=redis://127.0.0.1:6379/1
+      - RESULT_BACKEND=redis://127.0.0.1:6379/1
     volumes:
       - d:/static:/static
-    image: jigsaw-worker
     # linux 下使用 host
     # network_mode: host
     # windows 下使用 port
     # ports:
     #  - "8080:8080"
     # command: celery -A roop.my_celery.main worker --loglevel=info --events --concurrency=4
+    deploy:
+      restart_policy:
+        condition: always
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [ gpu ]
+    networks:
+      - jigsaw-network
     command: /bin/bash
+  redis:
+    image: redis
+    networks:
+      - jigsaw-network
+networks:
+  jigsaw-network:
+    driver: bridge

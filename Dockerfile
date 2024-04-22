@@ -38,6 +38,7 @@ RUN apt-get -y update && apt-get install -y --no-install-recommends \
         libgl1 libglib2.0-0 libssl-dev libcurl4-openssl-dev \
         software-properties-common \
         python3.10 python3.10-dev python3.10-venv  \
+        ffmpeg \
         git git-lfs wget curl zip unzip bzip2 vim inetutils-ping sudo net-tools iproute2 \
         ca-certificates tzdata && \
     ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && \

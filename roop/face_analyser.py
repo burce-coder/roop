@@ -5,6 +5,7 @@ import numpy
 
 import roop.globals
 from roop.typing import Frame, Face
+from roop.utilities import resolve_relative_path
 
 FACE_ANALYSER = None
 THREAD_LOCK = threading.Lock()
@@ -15,7 +16,9 @@ def get_face_analyser() -> Any:
 
     with THREAD_LOCK:
         if FACE_ANALYSER is None:
-            FACE_ANALYSER = insightface.app.FaceAnalysis(name='buffalo_l', providers=roop.globals.execution_providers)
+            model_path = resolve_relative_path('..')
+            FACE_ANALYSER = insightface.app.FaceAnalysis(name='buffalo_l',
+                                                         providers=roop.globals.execution_providers, root=model_path)
             FACE_ANALYSER.prepare(ctx_id=0)
     return FACE_ANALYSER
 
