@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import os
+from dotenv import load_dotenv
+load_dotenv()
 import sys
 # single thread doubles cuda performance - needs to be set before torch import
 if any(arg.startswith('--execution-provider') for arg in sys.argv):
