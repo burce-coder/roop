@@ -28,7 +28,8 @@ COPY requirements-roop.txt requirements-roop.txt
 RUN pip install --upgrade -r requirements-roop.txt --find-links https://download.pytorch.org/whl/torch_stable.html
 COPY . /app/
 
-FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
+# FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
+FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -46,41 +47,44 @@ RUN apt-get -y update && apt-get install -y --no-install-recommends \
     add-apt-repository ppa:oibaf/graphics-drivers -r && \
     rm -rf /var/lib/apt/lists/*
 
-RUN wget "https://drive.usercontent.google.com/download?id=1xB6zEO_rzqCXuiR2QCaUTexzBQY6yFUk&export=download&authuser=0&confirm=t&uuid=f24eb993-6822-4d0d-9c21-3bd6fe32ac3a&at=APZUnTWEQkLYuvBTNGBTE2v6PjTW%3A1713520294452" -O nv-tensorrt-local-repo-ubuntu2204-8.5.3-cuda-11.8_1.0-1_amd64.deb && \
-    dpkg -i nv-tensorrt-local-repo-ubuntu2204-8.5.3-cuda-11.8_1.0-1_amd64.deb
-
 # 安装 TensorRT
-# RUN wget "https://drive.usercontent.google.com/download?id=1xB6zEO_rzqCXuiR2QCaUTexzBQY6yFUk&export=download&authuser=0&confirm=t&uuid=f24eb993-6822-4d0d-9c21-3bd6fe32ac3a&at=APZUnTWEQkLYuvBTNGBTE2v6PjTW%3A1713520294452" -O nv-tensorrt-local-repo-ubuntu2204-8.5.3-cuda-11.8_1.0-1_amd64.deb && \
-#     dpkg -i nv-tensorrt-local-repo-ubuntu2204-8.5.3-cuda-11.8_1.0-1_amd64.deb && rm -rf nv-tensorrt-local-repo-ubuntu2204-8.5.3-cuda-11.8_1.0-1_amd64.deb && \
-#     cp /var/nv-tensorrt-local-repo-ubuntu2204-8.5.3-cuda-11.8/*-keyring.gpg /usr/share/keyrings/ && \
-#     cd /var/nv-tensorrt-local-repo-ubuntu2204-8.5.3-cuda-11.8 && \
-#     dpkg -i libnvinfer8_8.5.3-1+cuda11.8_amd64.deb && \
-#     dpkg -i libnvonnxparsers8_8.5.3-1+cuda11.8_amd64.deb && \
-#     dpkg -i libnvparsers8_8.5.3-1+cuda11.8_amd64.deb && \
-#     dpkg -i libnvinfer-samples_8.5.3-1+cuda11.8_all.deb && \
-#     dpkg -i python3-libnvinfer_8.5.3-1+cuda11.8_amd64.deb && \
-#     dpkg -i onnx-graphsurgeon_8.5.3-1+cuda11.8_amd64.deb && \
-#     dpkg -i graphsurgeon-tf_8.5.3-1+cuda11.8_amd64.deb && \
-#     dpkg -i uff-converter-tf_8.5.3-1+cuda11.8_amd64.deb && \
-#     dpkg -i tensorrt-libs_8.5.3.1-1+cuda11.8_amd64.deb && rm -rf /var/nv-tensorrt-local-repo-ubuntu2204-8.5.3-cuda-11.8/*
+RUN wget "https://drive.usercontent.google.com/download?id=1xB6zEO_rzqCXuiR2QCaUTexzBQY6yFUk&export=download&authuser=0&confirm=t&uuid=f24eb993-6822-4d0d-9c21-3bd6fe32ac3a&at=APZUnTWEQkLYuvBTNGBTE2v6PjTW%3A1713520294452" -O nv-tensorrt-local-repo-ubuntu2204-8.5.3-cuda-11.8_1.0-1_amd64.deb && \
+    dpkg -i nv-tensorrt-local-repo-ubuntu2204-8.5.3-cuda-11.8_1.0-1_amd64.deb && rm -rf nv-tensorrt-local-repo-ubuntu2204-8.5.3-cuda-11.8_1.0-1_amd64.deb && \
+    cp /var/nv-tensorrt-local-repo-ubuntu2204-8.5.3-cuda-11.8/*-keyring.gpg /usr/share/keyrings/ && \
+    cd /var/nv-tensorrt-local-repo-ubuntu2204-8.5.3-cuda-11.8 && \
+    dpkg -i libnvinfer8_8.5.3-1+cuda11.8_amd64.deb && \
+    dpkg -i libnvonnxparsers8_8.5.3-1+cuda11.8_amd64.deb && \
+    dpkg -i libnvparsers8_8.5.3-1+cuda11.8_amd64.deb && \
+    dpkg -i libnvinfer-plugin8_8.5.3-1+cuda11.8_amd64.deb && \
+    dpkg -i libnvinfer-dev_8.5.3-1+cuda11.8_amd64.deb && \
+    dpkg -i libnvinfer-plugin-dev_8.5.3-1+cuda11.8_amd64.deb && \
+    dpkg -i libnvparsers-dev_8.5.3-1+cuda11.8_amd64.deb && \
+    dpkg -i libnvonnxparsers8_8.5.3-1+cuda11.8_amd64.deb && \
+    dpkg -i libnvonnxparsers-dev_8.5.3-1+cuda11.8_amd64.deb && \
+    dpkg -i libnvinfer-samples_8.5.3-1+cuda11.8_all.deb && \
+    dpkg -i python3-libnvinfer_8.5.3-1+cuda11.8_amd64.deb && \
+    dpkg -i onnx-graphsurgeon_8.5.3-1+cuda11.8_amd64.deb && \
+    dpkg -i graphsurgeon-tf_8.5.3-1+cuda11.8_amd64.deb && \
+    dpkg -i uff-converter-tf_8.5.3-1+cuda11.8_amd64.deb && \
+    dpkg -i tensorrt-libs_8.5.3.1-1+cuda11.8_amd64.deb && rm -rf /var/nv-tensorrt-local-repo-ubuntu2204-8.5.3-cuda-11.8/*
 
 
-# ENV TIME_ZONE="Asia/Shanghai" \
-#     TZ="Asia/Shanghai" \
-#     VIRTUAL_ENV=/app/venv \
-#     PATH="/app:/app/venv/bin:${PATH}" \
-#     CUDA_TOOLKIT_ROOT_DIR="/usr/local/cuda" \
-#     LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/lib/x86_64-linux-gnu/ \
-#     CODE_BRANCH=${CODE_BRANCH:-main} \
-#     AWS_ACCESS_KEY_ID="XXX" \
-#     AWS_SECRET_ACCESS_KEY="XXX" \
-#     AWS_DEFAULT_REGION="us-east-1" \
-#     AWS_S3_ACCELERATE="false" \
-#     LOCAL_CACHE_PATH="/var/s3_cache" \
-#     PYOPENGL_PLATFORM="osmesa" \
-#     PYTHONPATH="/app:/app/guruai_image" \
-#     PYTHONDONTWRITEBYTECODE=1 \
-#     PYTHONUNBUFFERED=1
+ENV TIME_ZONE="Asia/Shanghai" \
+    TZ="Asia/Shanghai" \
+    VIRTUAL_ENV=/app/venv \
+    PATH="/app:/app/venv/bin:${PATH}" \
+    CUDA_TOOLKIT_ROOT_DIR="/usr/local/cuda" \
+    LD_LIBRARY_PATH=/usr/local/cuda/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/lib/x86_64-linux-gnu/ \
+    CODE_BRANCH=${CODE_BRANCH:-main} \
+    AWS_ACCESS_KEY_ID="XXX" \
+    AWS_SECRET_ACCESS_KEY="XXX" \
+    AWS_DEFAULT_REGION="us-east-1" \
+    AWS_S3_ACCELERATE="false" \
+    LOCAL_CACHE_PATH="/var/s3_cache" \
+    PYOPENGL_PLATFORM="osmesa" \
+    PYTHONPATH="/app:/app/guruai_image" \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
     
 
 WORKDIR /app
