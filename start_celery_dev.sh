@@ -1,0 +1,1 @@
+celery -A roop.my_celery.main worker --loglevel=info --events --concurrency=1 --pool=solo

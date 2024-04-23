@@ -23,13 +23,16 @@ WORKDIR /app
 
 RUN pip install torch==2.0.1+cu118 --find-links https://download.pytorch.org/whl/torch_stable.html
 RUN pip install fvcore iopath
-RUN pip install --no-index --no-cache-dir pytorch3d --find-links https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py310_cu118_pyt201/download.html
+# RUN pip install --no-index --no-cache-dir pytorch3d --find-links https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py310_cu118_pyt201/download.html
+RUN pip install pytorch3d --find-links https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py310_cu118_pyt201/download.html
 COPY requirements-roop.txt requirements-roop.txt
 RUN pip install --upgrade -r requirements-roop.txt --find-links https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py310_cu118_pyt201/download.html
+RUN pip uninstall onnxruntime onnxruntime-gpu
+RUN pip install onnxruntime-gpu==1.15.1 --find-links https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py310_cu118_pyt201/download.html
 COPY . /app/
 
-# FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
-FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
+FROM nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04
+# FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -57,12 +60,11 @@ RUN wget "https://drive.usercontent.google.com/download?id=1xB6zEO_rzqCXuiR2QCaU
     dpkg -i libnvonnxparsers8_8.5.3-1+cuda11.8_amd64.deb && \
     dpkg -i libnvparsers8_8.5.3-1+cuda11.8_amd64.deb && \
     dpkg -i libnvinfer-plugin8_8.5.3-1+cuda11.8_amd64.deb && \
-    dpkg -i libnvinfer-dev_8.5.3-1+cuda11.8_amd64.deb && \
-    dpkg -i libnvinfer-plugin-dev_8.5.3-1+cuda11.8_amd64.deb && \
-    dpkg -i libnvparsers-dev_8.5.3-1+cuda11.8_amd64.deb && \
-    dpkg -i libnvonnxparsers8_8.5.3-1+cuda11.8_amd64.deb && \
-    dpkg -i libnvonnxparsers-dev_8.5.3-1+cuda11.8_amd64.deb && \
-    dpkg -i libnvinfer-samples_8.5.3-1+cuda11.8_all.deb && \
+    # dpkg -i libnvinfer-dev_8.5.3-1+cuda11.8_amd64.deb && \
+    # dpkg -i libnvinfer-plugin-dev_8.5.3-1+cuda11.8_amd64.deb && \
+    # dpkg -i libnvparsers-dev_8.5.3-1+cuda11.8_amd64.deb && \
+    # dpkg -i libnvonnxparsers-dev_8.5.3-1+cuda11.8_amd64.deb && \
+    # dpkg -i libnvinfer-samples_8.5.3-1+cuda11.8_all.deb && \
     dpkg -i python3-libnvinfer_8.5.3-1+cuda11.8_amd64.deb && \
     dpkg -i onnx-graphsurgeon_8.5.3-1+cuda11.8_amd64.deb && \
     dpkg -i graphsurgeon-tf_8.5.3-1+cuda11.8_amd64.deb && \
@@ -90,3 +92,4 @@ ENV TIME_ZONE="Asia/Shanghai" \
 
 WORKDIR /app
 COPY --from=builder /app /app
+ENTRYPOINT ["bash", "deploy/entrypoint.sh"]
