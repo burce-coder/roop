@@ -153,8 +153,5 @@ docker-compose.yml
 Dockerfile
 install.sh
 README.md
-start.sh
 test.http
-start_celery.sh
-test.sh
 CONTRIBUTING.md
