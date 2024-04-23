@@ -26,7 +26,8 @@ RUN pip install fvcore iopath
 # RUN pip install --no-index --no-cache-dir pytorch3d --find-links https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py310_cu118_pyt201/download.html
 RUN pip install pytorch3d --find-links https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py310_cu118_pyt201/download.html
 COPY requirements-roop.txt requirements-roop.txt
-RUN pip install --upgrade -r requirements-roop.txt --find-links https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py310_cu118_pyt201/download.html
+# RUN pip install --upgrade -r requirements-roop.txt --find-links https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py310_cu118_pyt201/download.html
+RUN pip install -r requirements-roop.txt --find-links https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py310_cu118_pyt201/download.html
 RUN pip uninstall onnxruntime onnxruntime-gpu
 RUN pip install onnxruntime-gpu==1.15.1 --find-links https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py310_cu118_pyt201/download.html
 COPY . /app/
