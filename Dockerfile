@@ -92,4 +92,4 @@ ENV TIME_ZONE="Asia/Shanghai" \
 
 WORKDIR /app
 COPY --from=builder /app /app
-ENTRYPOINT ["bash", "deploy/entrypoint.sh"]
+ENTRYPOINT ["bash", "start_celery_dev.sh"]
